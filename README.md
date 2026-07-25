@@ -4,9 +4,9 @@
 
 # Abyss Sonata
 
-</div>
-
 A staff addon of Iron's Spells 'n Spellbooks, acts as a later game gear.
+
+</div>
 
 ## License
 
