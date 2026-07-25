@@ -1,0 +1,18 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.abyss_sonata.default": {
+			"loop": true,
+			"animation_length": 2.0,
+			"bones": {
+				"orb": {
+					"scale": {
+						"0.0": [1, 1, 1],
+						"1.0": [0.85, 0.85, 0.85],
+						"2.0": [1, 1, 1]
+					}
+				}
+			}
+		}
+	}
+}

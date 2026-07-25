@@ -1,0 +1,48 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "minecraft:echo_shard"
+    },
+    "B": {
+      "item": "irons_spellbooks:amethyst_rapier"
+    },
+    "C": {
+      "item": "irons_spellbooks:ice_staff"
+    },
+    "D": {
+      "item": "irons_spellbooks:eldritch_manuscript"
+    },
+    "E": {
+      "item": "irons_spellbooks:blood_staff"
+    },
+    "F": {
+      "item": "irons_spellbooks:pyrium_staff"
+    }
+  },
+  "pattern": [
+    "ABA",
+    "CDE",
+    "AFA"
+  ],
+  "result": {
+    "components": {
+      "irons_spellbooks:spell_container": {
+        "data": [
+          {
+            "id": "irons_spellbooks:echoing_strikes",
+            "index": 0,
+            "level": 5,
+            "locked": true
+          }
+        ],
+        "maxSpells": 1,
+        "mustEquip": false,
+        "spellWheel": true
+      }
+    },
+    "count": 1,
+    "id": "abyss_sonata:abyss_sonata"
+  }
+}

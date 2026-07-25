@@ -1,0 +1,53 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 6,
+				"visible_bounds_offset": [0, 1, 0]
+			},
+			"bones": [
+				{
+					"name": "staff",
+					"pivot": [0, -30, 0],
+					"cubes": [
+						{"origin": [-0.58767, 20.00232, -1], "size": [7, 2, 2], "pivot": [4.45283, 20.67272, 0], "rotation": [0, 0, -22.5], "uv": [9, 34]},
+						{"origin": [-5, 23.3, -3.5], "size": [7, 2, 2], "pivot": [-1.5, 22.8, -1], "rotation": [0, -45, 90], "uv": [26, 30]},
+						{"origin": [-2, 24.50711, -5.24264], "size": [4, 2, 2], "inflate": 0.001, "pivot": [0, 25.50711, -4.24264], "rotation": [0, 0, 90], "uv": [34, 15]},
+						{"origin": [-2, 24.5364, 3.37904], "size": [4, 2, 2], "inflate": 0.001, "pivot": [0, 25.5364, 4.37904], "rotation": [0, 0, 90], "uv": [9, 39]},
+						{"origin": [-5.4, 23.4, 1.5], "size": [7, 2, 2], "pivot": [-1.5, 22.9, 0.5], "rotation": [0, 45, 90], "uv": [34, 5]},
+						{"origin": [-5.5, 22.5, -1], "size": [10, 2, 2], "pivot": [-1.6463, 27.3483, 0], "rotation": [0, 0, 90], "uv": [9, 10]},
+						{"origin": [-9, 20, -1], "size": [10, 2, 2], "inflate": 0.001, "pivot": [-4, 21, 0], "rotation": [0, 0, 22.5], "uv": [9, 15]},
+						{"origin": [-10.94588, 30.13066, -1], "size": [12, 2, 2], "inflate": 0.001, "pivot": [-4.94588, 31.13066, 0], "rotation": [0, 0, -22.5], "uv": [9, 0]},
+						{"origin": [1.6, 32, -1], "size": [4, 2, 2], "inflate": 0.1, "pivot": [3.5, 32, 0], "rotation": [0, 0, -67.5], "uv": [38, 0]},
+						{"origin": [1.6, 28, -1], "size": [4, 2, 2], "inflate": 0.1, "pivot": [3.5, 32, 0], "rotation": [0, 0, -67.5], "uv": [28, 35]},
+						{"origin": [-43.63959, 25.28016, -1], "size": [10, 2, 2], "pivot": [-3.93959, -79.41984, -0.1], "rotation": [0, 0, 22.5], "uv": [9, 5]}
+					]
+				},
+				{
+					"name": "orb",
+					"parent": "staff",
+					"pivot": [0.5, 26, 0],
+					"cubes": [
+						{"origin": [-1.5, 24, -2], "size": [4, 4, 4], "pivot": [0.5, 26, 0], "rotation": [35, -30, 55], "uv": [9, 25]}
+					]
+				},
+				{
+					"name": "stick",
+					"parent": "staff",
+					"pivot": [0, -30, 0],
+					"cubes": [
+						{"origin": [-1, -26, -1], "size": [2, 46, 2], "inflate": -0.001, "uv": [0, 0]},
+						{"origin": [-4, 14, -1], "size": [8, 2, 2], "uv": [9, 20]},
+						{"origin": [-3, 10, -1], "size": [6, 2, 2], "uv": [34, 10]},
+						{"origin": [-2, -30, -2], "size": [4, 4, 4], "uv": [26, 21]}
+					]
+				}
+			]
+		}
+	]
+}
