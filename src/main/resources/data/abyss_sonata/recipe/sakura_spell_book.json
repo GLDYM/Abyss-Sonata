@@ -1,0 +1,45 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "tsuki"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "irons_spellbooks:netherite_spell_book"
+    },
+    "B": {
+      "item": "tsuki:sakura_diamond"
+    },
+    "C": {
+      "item": "irons_spellbooks:villager_spell_book"
+    },
+    "D": {
+      "item": "irons_spellbooks:evoker_spell_book"
+    },
+    "E": {
+      "item": "tsuki:sakura_guide"
+    },
+    "F": {
+      "item": "irons_spellbooks:blaze_spell_book"
+    },
+    "G": {
+      "item": "irons_spellbooks:druidic_spell_book"
+    },
+    "I": {
+      "item": "irons_spellbooks:necronomicon_spell_book"
+    }
+  },
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GBI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "abyss_sonata:sakura_spell_book"
+  }
+}

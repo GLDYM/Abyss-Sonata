@@ -1,8 +1,8 @@
 package dev.polaris_light.abysssonata.item;
 
 import dev.polaris_light.abysssonata.client.renderer.item.AbyssSonataRenderer;
+import dev.polaris_light.abysssonata.config.AbyssSonataConfig;
 import io.redspace.ironsspellbooks.api.item.weapons.ExtendedSwordItem;
-import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.registry.SpellDataRegistryHolder;
 import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.IPresetSpellContainer;
@@ -12,10 +12,19 @@ import io.redspace.ironsspellbooks.item.weapons.AttributeContainer;
 import io.redspace.ironsspellbooks.item.weapons.IronsWeaponTier;
 import io.redspace.ironsspellbooks.item.weapons.StaffItem;
 import net.minecraft.core.Holder;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.neoforged.neoforge.common.ItemAbilities;
@@ -29,10 +38,14 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
+import org.jetbrains.annotations.NotNull;
 
 public final class AbyssSonataItem extends StaffItem implements IPresetSpellContainer, GeoItem {
+    private static final String DAMAGE_TYPE_KEY = "AbyssSonataDamageType";
     private static final RawAnimation IDLE_ANIMATION =
             RawAnimation.begin().thenLoop("animation.abyss_sonata.default");
     private static final IronsWeaponTier TIER = new AbyssSonataTier();
@@ -47,13 +60,14 @@ public final class AbyssSonataItem extends StaffItem implements IPresetSpellCont
         super(properties);
     }
 
-    public static ItemAttributeModifiers createAttributes() {
-        return ExtendedSwordItem.createAttributes(TIER);
-    }
-
     @Override
     public boolean hasCustomRendering() {
         return true;
+    }
+
+    @Override
+    public ItemAttributeModifiers getDefaultAttributeModifiers() {
+        return ExtendedSwordItem.createAttributes(TIER);
     }
 
     @Override
@@ -90,6 +104,54 @@ public final class AbyssSonataItem extends StaffItem implements IPresetSpellCont
         return false; // Disable the enchantment glint effect
     }
 
+    public static Optional<ResourceLocation> getSelectedDamageType(ItemStack stack) {
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        if (customData == null) {
+            return Optional.empty();
+        }
+        String value = customData.copyTag().getString(DAMAGE_TYPE_KEY);
+        if (value.isBlank()) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(ResourceLocation.tryParse(value)).filter(id -> !id.getPath().isBlank());
+    }
+
+    public static Optional<ResourceLocation> cycleDamageType(ItemStack stack, Registry<DamageType> registry, boolean forward) {
+        List<ResourceLocation> damageTypes = registry.keySet().stream().sorted(Comparator.comparing(ResourceLocation::toString)).toList();
+        if (damageTypes.isEmpty()) {
+            return Optional.empty();
+        }
+
+        int currentIndex = getSelectedDamageType(stack).map(damageTypes::indexOf)
+                .filter(index -> index >= 0)
+                .map(index -> index + 1)
+                .orElse(0);
+        int nextIndex = Math.floorMod(currentIndex + (forward ? 1 : -1), damageTypes.size() + 1);
+        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        if (nextIndex == 0) {
+            tag.remove(DAMAGE_TYPE_KEY);
+        } else {
+            tag.putString(DAMAGE_TYPE_KEY, damageTypes.get(nextIndex - 1).toString());
+        }
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        return getSelectedDamageType(stack);
+    }
+
+    public static void clearDamageType(ItemStack stack) {
+        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        tag.remove(DAMAGE_TYPE_KEY);
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, Item.TooltipContext context, @NotNull List<Component> lines, @NotNull TooltipFlag flag) {
+        lines.add(Component.translatable("item.abyss_sonata.abyss_sonata.damage_type_switch").withStyle(ChatFormatting.AQUA));
+        getSelectedDamageType(stack).ifPresent(id -> lines.add(Component.translatable(
+                "item.abyss_sonata.abyss_sonata.selected_damage_type", id.toString()
+        ).withStyle(ChatFormatting.AQUA)));
+        super.appendHoverText(stack, context, lines, flag);
+    }
+
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
@@ -124,28 +186,19 @@ public final class AbyssSonataItem extends StaffItem implements IPresetSpellCont
     }
 
     private static final class AbyssSonataTier implements IronsWeaponTier {
-        private static final AttributeContainer[] ATTRIBUTES = new AttributeContainer[]{
-                new AttributeContainer(AttributeRegistry.CAST_TIME_REDUCTION, 0.20D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
-                new AttributeContainer(AttributeRegistry.COOLDOWN_REDUCTION, 0.30D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
-                new AttributeContainer(AttributeRegistry.SPELL_POWER, 0.30D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
-                new AttributeContainer(AttributeRegistry.ELDRITCH_SPELL_POWER, 0.10D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
-                new AttributeContainer(AttributeRegistry.MANA_REGEN, 0.50D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
-                new AttributeContainer(Attributes.ENTITY_INTERACTION_RANGE, 1.0D, AttributeModifier.Operation.ADD_VALUE)
-        };
-
         @Override
         public float getSpeed() {
-            return -2.4F;
+            return (float) AbyssSonataConfig.attackSpeed;
         }
 
         @Override
         public float getAttackDamageBonus() {
-            return 12.0F;
+            return (float) AbyssSonataConfig.attackDamageBonus;
         }
 
         @Override
         public AttributeContainer[] getAdditionalAttributes() {
-            return ATTRIBUTES;
+            return AttributeConfigHelper.parseAttributeContainers(AbyssSonataConfig.additionalAttributes, "Abyss Sonata");
         }
     }
 }

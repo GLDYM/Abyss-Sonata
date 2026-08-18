@@ -2,6 +2,7 @@ package dev.polaris_light.abysssonata.registry;
 
 import dev.polaris_light.abysssonata.AbyssSonata;
 import dev.polaris_light.abysssonata.item.AbyssSonataItem;
+import dev.polaris_light.abysssonata.item.SakuraSpellBookItem;
 import io.redspace.ironsspellbooks.render.CinderousRarity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
@@ -15,8 +16,13 @@ public final class ModItems {
             () -> new AbyssSonataItem(new Item.Properties()
                     .stacksTo(1)
                     .fireResistant()
-                    .rarity(CinderousRarity.CINDEROUS_RARITY_PROXY.getValue())
-                    .attributes(AbyssSonataItem.createAttributes())));
+                    .rarity(CinderousRarity.CINDEROUS_RARITY_PROXY.getValue())));
+
+    public static final DeferredHolder<Item, Item> SAKURA_SPELL_BOOK = ITEMS.register("sakura_spell_book",
+            () -> new SakuraSpellBookItem(new Item.Properties()
+                    .stacksTo(1)
+                    .fireResistant()
+                    .rarity(CinderousRarity.CINDEROUS_RARITY_PROXY.getValue())));
 
     private ModItems() {
     }

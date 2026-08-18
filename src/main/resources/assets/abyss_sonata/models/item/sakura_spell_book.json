@@ -1,0 +1,29 @@
+{
+  "format_version": "1.21.11",
+  "credit": "Made with Blockbench",
+  "parent": "minecraft:item/handheld",
+  "display": {},
+  "loader": "neoforge:separate_transforms",
+  "base": {
+    "parent": "irons_spellbooks:item/template_spell_book_model",
+    "textures": {
+      "book": "abyss_sonata:item/sakura_spell_book",
+      "particle": "abyss_sonata:item/sakura_spell_book"
+    }
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "item/generated",
+      "textures": {
+        "layer0": "abyss_sonata:item/sakura_spell_book_icon"
+      }
+    },
+    "head": {
+      "parent": "irons_spellbooks:item/template_spell_book_model_open",
+      "textures": {
+        "book": "abyss_sonata:item/sakura_spell_book",
+        "particle": "abyss_sonata:item/sakura_spell_book"
+      }
+    }
+  }
+}
