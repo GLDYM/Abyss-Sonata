@@ -33,3 +33,5 @@ replay_pid*
 
 .venv
 .tmp
+__pycache__/
+backup/
